@@ -1,0 +1,73 @@
+name: "GitLint Action"
+description: "Check if naming conventions for commits, branches, and PRs are respected"
+inputs:
+  commit-message-body-max-length:
+    description: "Max. length of commit message body"
+    required: false
+    default: -1
+  commit-message-body-min-length:
+    description: "Min. length of commit message body"
+    required: false
+    default: -1
+  commit-message-subject-max-length:
+    description: "Max. length of commit message subject"
+    required: false
+    default: -1
+  commit-message-subject-min-length:
+    description: "Min. length of commit message subject"
+    required: false
+    default: -1
+  github-token:
+    description: "GitHub token used to access api"
+    required: true
+  prohibit-unknown-commit-authors:
+    description: "Prohibit commit authors that are not known to GitHub"
+    required: false
+    default: false
+  prohibit-unknown-commit-committers:
+    description: "Prohibit commit committers that are not known to GitHub"
+    required: false
+    default: false
+  prohibit-unsigned-commits:
+    description: "Prohibit commits without a valid signature"
+    required: false
+    default: false
+  re-branch-name:
+    description: "Regular expression to check branch name"
+    required: false
+    default: ".*"
+  re-commit-author-email:
+    description: "Regular expression to check commit author email"
+    required: false
+    default: ".*"
+  re-commit-author-name:
+    description: "Regular expression to check commit author name"
+    required: false
+    default: ".*"
+  re-commit-committer-email:
+    description: "Regular expression to check commit author email"
+    required: false
+    default: ".*"
+  re-commit-committer-name:
+    description: "Regular expression to check commit author name"
+    required: false
+    default: ".*"
+  re-commit-message-body:
+    description: "Regular expression to check commit message body"
+    required: false
+    default: ".*"
+  re-commit-message-split:
+    description: "Regular expression to split commit message into subject and body"
+    required: false
+    default: "([^\n]*)(?:\n\n(.*))?"
+  re-commit-message-subject:
+    description: "Regular expression to check commit message subject"
+    required: false
+    default: ".*"
+  re-pull-request-title:
+    description: "Regular expression to check pull request title"
+    required: false
+    default: ".*"
+runs:
+  using: "node12"
+  main: "index.js"

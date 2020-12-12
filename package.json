@@ -1,0 +1,24 @@
+{
+  "name": "gitlint-action",
+  "version": "1.0.0",
+  "description": "This GitHub Action ensures that your naming conventions for commits, branches, and pull requests are being respected.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aschbacd/gitlint-action.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/aschbacd/gitlint-action/issues"
+  },
+  "homepage": "https://github.com/aschbacd/gitlint-action#readme",
+  "dependencies": {
+    "@actions/core": "^1.2.6",
+    "@actions/github": "^4.0.0"
+  }
+}
