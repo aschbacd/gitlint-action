@@ -1,5 +1,8 @@
 name: "GitLint Action"
 description: "Check if naming conventions for commits, branches, and PRs are respected"
+branding:
+  icon: "check"
+  color: "blue"
 inputs:
   commit-message-body-max-length:
     description: "Max. length of commit message body"
