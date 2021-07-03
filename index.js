@@ -33,6 +33,7 @@ async function run() {
     const commitMessageSubjectMaxLength = parseInt(core.getInput('commit-message-subject-max-length'))
     const commitMessageSubjectMinLength = parseInt(core.getInput('commit-message-subject-min-length'))
 
+    const prohibitBlankLinesCmBody = (core.getInput('prohibit-blank-lines-cm-body') == 'true')
     const prohibitUnknownCommitAuthors = (core.getInput('prohibit-unknown-commit-authors') == 'true')
     const prohibitUnknownCommitCommitters = (core.getInput('prohibit-unknown-commit-committers') == 'true')
     const prohibitUnsignedCommits = (core.getInput('prohibit-unsigned-commits') == 'true')
@@ -73,10 +74,10 @@ async function run() {
       core.info(`Commit hash: ${commit.sha}`)
       core.info(`Commit author email: ${commit.commit.author.email}`)
       core.info(`Commit author name: ${commit.commit.author.name}`)
-      core.info(`Commit author GitHub account: ${commit.author}`)
+      core.info(`Commit author GitHub account: ${commit.author == null ? undefined : commit.author.login}`)
       core.info(`Commit committer email: ${commit.commit.committer.email}`)
       core.info(`Commit committer name: ${commit.commit.committer.name}`)
-      core.info(`Commit committer GitHub account: ${commit.committer}`)
+      core.info(`Commit committer GitHub account: ${commit.committer == null ? undefined : commit.committer.login}`)
       core.info(`Commit has valid signature: ${commit.commit.verification.verified}`)
       core.info(`Commit message subject: ${commitMessageSubject}`)
       core.info(`Commit message body: ${commitMessageBody}`)
@@ -118,8 +119,12 @@ async function run() {
       // Check commit message body
       if (commitMessageBody != null) {
         commitMessageBody.split("\n").forEach(function (line, index) {
-          if (commitMessageBodyMinLength != -1 && line.length < commitMessageBodyMinLength)
+          if (line.length == 0) {
+            if (prohibitBlankLinesCmBody)
+              core.setFailed(`Blank lines are not allowed in commit message body; line ${(index+1).toString()} (${commit.sha.substr(0, 7)})`)
+          } else if (commitMessageBodyMinLength != -1 && line.length < commitMessageBodyMinLength) {
             core.setFailed(`Commit message body line ${(index+1).toString()} is too short (${commit.sha.substr(0, 7)})`)
+          }            
 
           if (commitMessageBodyMaxLength != -1 && line.length > commitMessageBodyMaxLength)
             core.setFailed(`Commit message body line ${(index+1).toString()} is too long (${commit.sha.substr(0, 7)})`)

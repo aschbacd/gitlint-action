@@ -21,7 +21,7 @@ jobs:
     name: GitLint
     steps:
       - name: Lint commits, branches, and pull requests
-        uses: aschbacd/gitlint-action@v1.0.0
+        uses: aschbacd/gitlint-action@v1.0.1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           commit-message-body-max-length: 72
@@ -43,6 +43,7 @@ The following input keys can be used in your GitHub Actions workflow (shown abov
 | commit-message-subject-max-length  | Max. characters for commit message subject                   | -1 (disabled)           | 50                            |
 | commit-message-subject-min-length  | Min. characters for commit message subject                   | -1 (disabled)           | -1 (disabled)                 |
 | github-token                       | Token used to authenticate against GitHub api                | `-`                     | `${{ secrets.GITHUB_TOKEN }}` |
+| prohibit-blank-lines-cm-body       | Commit message body cannot include blank lines               | `false`                 | `false`                       |
 | prohibit-unknown-commit-authors    | Commit author must be GitHub user                            | `false`                 | `true`                        |
 | prohibit-unknown-commit-committers | Commit committer must be GitHub user                         | `false`                 | `true`                        |
 | prohibit-unsigned-commits          | Commits without a valid signature are invalid                | `false`                 | `false`                       |

@@ -23,6 +23,10 @@ inputs:
   github-token:
     description: "GitHub token used to access api"
     required: true
+  prohibit-blank-lines-cm-body:
+    description: "Prohibit blank lines in commit message body"
+    required: false
+    default: false
   prohibit-unknown-commit-authors:
     description: "Prohibit commit authors that are not known to GitHub"
     required: false
