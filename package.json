@@ -1,6 +1,6 @@
 {
   "name": "gitlint-action",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "This GitHub Action ensures that your naming conventions for commits, branches, and pull requests are being respected.",
   "main": "index.js",
   "scripts": {

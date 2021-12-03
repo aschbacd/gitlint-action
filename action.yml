@@ -1,5 +1,5 @@
 name: "GitLint Action"
-description: "Check if naming conventions for commits, branches, and PRs are respected"
+description: "Check if naming conventions for commits, branches, and pull requests are respected"
 branding:
   icon: "check"
   color: "blue"
@@ -23,6 +23,7 @@ inputs:
   github-token:
     description: "GitHub token used to access api"
     required: true
+    default: ${{ github.token }}
   prohibit-blank-lines-cm-body:
     description: "Prohibit blank lines in commit message body"
     required: false
