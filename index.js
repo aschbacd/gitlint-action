@@ -13,12 +13,12 @@ async function run() {
     const octokit = github.getOctokit(githubToken)
 
     // Get data
-    const { data: pullRequest } = await octokit.pulls.get({
+    const { data: pullRequest } = await octokit.rest.pulls.get({
       owner: github.context.payload.repository.owner.login,
       repo: github.context.payload.repository.name,
       pull_number: github.context.payload.pull_request.number
     })
-    const { data: commits } = await octokit.pulls.listCommits({
+    const { data: commits } = await octokit.rest.pulls.listCommits({
       owner: github.context.payload.repository.owner.login,
       repo: github.context.payload.repository.name,
       pull_number: github.context.payload.pull_request.number

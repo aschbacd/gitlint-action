@@ -7,10 +7,10 @@ created or when it gets updated.
 
 ## Usage
 
-Create the file `.github/workflows/gitlint.yaml` in your repository and add the following workflow:
+Create the file `.github/workflows/linters.yaml` in your repository and add the following workflow:
 
 ```yaml
-name: GitLint
+name: Linters
 
 on:
   pull_request:
@@ -22,39 +22,32 @@ jobs:
     steps:
       - name: Lint commits, branches, and pull requests
         uses: aschbacd/gitlint-action@v1.0.2
-        with:
-          commit-message-body-max-length: 72
-          commit-message-subject-max-length: 50
-          prohibit-unknown-commit-authors: true
-          prohibit-unknown-commit-committers: true
-          re-commit-message-subject: ^[A-Z].*((?!\.).)$
-          re-pull-request-title: ^[A-Z].*((?!\.).)$
 ```
 
 ## Customization
 
 The following input keys can be used in your GitHub Actions workflow (shown above).
 
-| Key                                | Description                                                  | Default                 | Recommended             |
-| ---------------------------------- | ------------------------------------------------------------ | ----------------------- | ----------------------- |
-| commit-message-body-max-length     | Max. characters for line in commit message body              | -1 (disabled)           | 72                      |
-| commit-message-body-min-length     | Min. characters for line in commit message body              | -1 (disabled)           | -1 (disabled)           |
-| commit-message-subject-max-length  | Max. characters for commit message subject                   | -1 (disabled)           | 50                      |
-| commit-message-subject-min-length  | Min. characters for commit message subject                   | -1 (disabled)           | -1 (disabled)           |
-| github-token                       | Token used to authenticate against GitHub api                | `${{ github.token }}`   | `${{ github.token }}`   |
-| prohibit-blank-lines-cm-body       | Commit message body cannot include blank lines               | `false`                 | `false`                 |
-| prohibit-unknown-commit-authors    | Commit author must be GitHub user                            | `false`                 | `true`                  |
-| prohibit-unknown-commit-committers | Commit committer must be GitHub user                         | `false`                 | `true`                  |
-| prohibit-unsigned-commits          | Commits without a valid signature are invalid                | `false`                 | `false`                 |
-| re-branch-name                     | Regex used to check branch name                              | `.*`                    | `.*`                    |
-| re-commit-author-email             | Regex used to check commit author email                      | `.*`                    | `.*`                    |
-| re-commit-author-name              | Regex used to check commit author name                       | `.*`                    | `.*`                    |
-| re-commit-committer-email          | Regex used to check commit committer email                   | `.*`                    | `.*`                    |
-| re-commit-committer-name           | Regex used to check commit committer name                    | `.*`                    | `.*`                    |
-| re-commit-message-body             | Regex used to check commit message body (DotAll)             | `.*`                    | `.*`                    |
-| re-commit-message-split            | Regex used to split commit message subject and body (DotAll) | `([^\n]*)(?:\n\n(.*))?` | `([^\n]*)(?:\n\n(.*))?` |
-| re-commit-message-subject          | Regex used to check commit message subject                   | `.*`                    | `^[A-Z].*((?!\.).)$`    |
-| re-pull-request-title              | Regex used to check pull request title                       | `.*`                    | `^[A-Z].*((?!\.).)$`    |
+| Key                                | Description                                                  | Default                 |
+| ---------------------------------- | ------------------------------------------------------------ | ----------------------- |
+| commit-message-body-max-length     | Max. characters for line in commit message body              | 72                      |
+| commit-message-body-min-length     | Min. characters for line in commit message body              | -1 (disabled)           |
+| commit-message-subject-max-length  | Max. characters for commit message subject                   | 50                      |
+| commit-message-subject-min-length  | Min. characters for commit message subject                   | -1 (disabled)           |
+| github-token                       | Token used to authenticate against GitHub api                | `${{ github.token }}`   |
+| prohibit-blank-lines-cm-body       | Commit message body cannot include blank lines               | `false`                 |
+| prohibit-unknown-commit-authors    | Commit author must be GitHub user                            | `true`                  |
+| prohibit-unknown-commit-committers | Commit committer must be GitHub user                         | `true`                  |
+| prohibit-unsigned-commits          | Commits without a valid signature are invalid                | `false`                 |
+| re-branch-name                     | Regex used to check branch name                              | `.*`                    |
+| re-commit-author-email             | Regex used to check commit author email                      | `.*`                    |
+| re-commit-author-name              | Regex used to check commit author name                       | `.*`                    |
+| re-commit-committer-email          | Regex used to check commit committer email                   | `.*`                    |
+| re-commit-committer-name           | Regex used to check commit committer name                    | `.*`                    |
+| re-commit-message-body             | Regex used to check commit message body (DotAll)             | `.*`                    |
+| re-commit-message-split            | Regex used to split commit message subject and body (DotAll) | `([^\n]*)(?:\n\n(.*))?` |
+| re-commit-message-subject          | Regex used to check commit message subject                   | `^[A-Z].*((?!\\.).)$`   |
+| re-pull-request-title              | Regex used to check pull request title                       | `^[A-Z].*((?!\\.).)$`   |
 
 ## Resources
 

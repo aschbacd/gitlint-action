@@ -7,7 +7,7 @@ inputs:
   commit-message-body-max-length:
     description: "Max. length of commit message body"
     required: false
-    default: -1
+    default: 72
   commit-message-body-min-length:
     description: "Min. length of commit message body"
     required: false
@@ -15,7 +15,7 @@ inputs:
   commit-message-subject-max-length:
     description: "Max. length of commit message subject"
     required: false
-    default: -1
+    default: 50
   commit-message-subject-min-length:
     description: "Min. length of commit message subject"
     required: false
@@ -31,11 +31,11 @@ inputs:
   prohibit-unknown-commit-authors:
     description: "Prohibit commit authors that are not known to GitHub"
     required: false
-    default: false
+    default: true
   prohibit-unknown-commit-committers:
     description: "Prohibit commit committers that are not known to GitHub"
     required: false
-    default: false
+    default: true
   prohibit-unsigned-commits:
     description: "Prohibit commits without a valid signature"
     required: false
@@ -71,11 +71,11 @@ inputs:
   re-commit-message-subject:
     description: "Regular expression to check commit message subject"
     required: false
-    default: ".*"
+    default: "^[A-Z].*((?!\\.).)$"
   re-pull-request-title:
     description: "Regular expression to check pull request title"
     required: false
-    default: ".*"
+    default: "^[A-Z].*((?!\\.).)$"
 runs:
   using: "node12"
   main: "index.js"
