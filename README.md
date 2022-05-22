@@ -21,7 +21,7 @@ jobs:
     name: GitLint
     steps:
       - name: Lint commits, branches, and pull requests
-        uses: aschbacd/gitlint-action@v1.0.2
+        uses: aschbacd/gitlint-action@v1.0.3
 ```
 
 ## Customization
