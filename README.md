@@ -13,7 +13,8 @@ Create the file `.github/workflows/linters.yaml` in your repository and add the 
 name: Linters
 
 on:
-  pull_request:
+  pull_request: {}
+  push: {}
 
 jobs:
   gitlint:
@@ -21,7 +22,7 @@ jobs:
     name: GitLint
     steps:
       - name: Lint commits, branches, and pull requests
-        uses: aschbacd/gitlint-action@v1.0.3
+        uses: aschbacd/gitlint-action@v1.1.0
 ```
 
 ## Customization
