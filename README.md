@@ -13,7 +13,8 @@ Create the file `.github/workflows/linters.yaml` in your repository and add the 
 name: Linters
 
 on:
-  pull_request:
+  pull_request: {}
+  push: {}
 
 jobs:
   gitlint:
@@ -21,7 +22,32 @@ jobs:
     name: GitLint
     steps:
       - name: Lint commits, branches, and pull requests
-        uses: aschbacd/gitlint-action@v1.0.3
+        uses: aschbacd/gitlint-action@v1.1.0
+```
+
+### Example configuration for Jira
+
+If you want to allow Jira issue ids at the beginning of the commit message / pull request title you
+can use the following configuration. With this configuration commit messages / pull request titles
+like `[GLA-1] Add sample file` as well as `Add sample file` will be valid.
+
+```yaml
+name: Linters
+
+on:
+  pull_request: {}
+  push: {}
+
+jobs:
+  gitlint:
+    runs-on: ubuntu-latest
+    name: GitLint
+    steps:
+      - name: Lint commits, branches, and pull requests
+        uses: aschbacd/gitlint-action@v1.1.0
+        with:
+          re-commit-message-subject: ^(\[[A-Z]+\-[0-9]+\] )?[A-Z].*((?!\.).)$
+          re-pull-request-title: ^(\[[A-Z]+\-[0-9]+\] )?[A-Z].*((?!\.).)$
 ```
 
 ## Customization
@@ -48,6 +74,7 @@ The following input keys can be used in your GitHub Actions workflow (shown abov
 | re-commit-message-split            | Regex used to split commit message subject and body (DotAll) | `([^\n]*)(?:\n\n(.*))?` |
 | re-commit-message-subject          | Regex used to check commit message subject                   | `^[A-Z].*((?!\\.).)$`   |
 | re-pull-request-title              | Regex used to check pull request title                       | `^[A-Z].*((?!\\.).)$`   |
+| re-tag-name                        | Regex used to check tag name                                 | `.*`                    |
 
 ## Resources
 
