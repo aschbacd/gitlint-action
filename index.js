@@ -12,17 +12,14 @@ async function run() {
     const githubToken = core.getInput('github-token')
     const octokit = github.getOctokit(githubToken)
 
-    // Get data
-    const { data: pullRequest } = await octokit.rest.pulls.get({
-      owner: github.context.payload.repository.owner.login,
-      repo: github.context.payload.repository.name,
-      pull_number: github.context.payload.pull_request.number
-    })
-    const { data: commits } = await octokit.rest.pulls.listCommits({
-      owner: github.context.payload.repository.owner.login,
-      repo: github.context.payload.repository.name,
-      pull_number: github.context.payload.pull_request.number
-    })
+    // Get context
+    const eventName = github.context.eventName
+    const payload = github.context.payload
+    const owner = payload.repository.owner.login
+    const repo = payload.repository.name
+
+    const ref = payload.ref
+    const pullRequest = payload.pull_request
 
     // -----
     // --------------- GET INPUT
@@ -47,21 +44,91 @@ async function run() {
     const regexCommitMessageSplit = RegExp(core.getInput('re-commit-message-split'), 's')
     const regexCommitMessageSubject = RegExp(core.getInput('re-commit-message-subject'))
     const regexPullRequestTitle = RegExp(core.getInput('re-pull-request-title'))
+    const regexTagName = RegExp(core.getInput('re-tag-name'))
 
     // -----
-    // --------------- CHECK DATA
+    // --------------- CHECK PULL REQUEST
     // ----------
 
-    core.info(`Pull request title: ${pullRequest.title}`)
-    core.info(`Branch name: ${pullRequest.head.ref}`)
+    if (eventName === "pull_request") {
+      // Print pull request title
+      core.info(`Pull request title: ${pullRequest.title}`)      
 
-    // Check pull request title
-    if (!regexPullRequestTitle.test(pullRequest.title))
-      core.setFailed("Pull Request title does not match regex")
+      // Check pull request title
+      if (!regexPullRequestTitle.test(pullRequest.title))
+        core.setFailed("Pull Request title does not match regex")
+    }
 
-    // Check branch name
-    if (!regexBranchName.test(pullRequest.head.ref))
-      core.setFailed("Branch name does not match regex")
+    // -----
+    // --------------- CHECK BRANCH
+    // ----------
+
+    // Get branch name
+    let branchName = ""
+    if (eventName === "pull_request") {
+      branchName = pullRequest.head.ref
+    } else if (eventName === "push" && ref.startsWith("refs/heads")) {
+      branchName = ref.replace("refs/heads/", "")
+    }
+
+    if (branchName !== "") {
+      // Print branch name
+      core.info(`Branch name: ${branchName}`)
+
+      // Check branch name
+      if (!regexBranchName.test(branchName))
+        core.setFailed("Branch name does not match regex")
+    }
+
+    // -----
+    // --------------- CHECK TAG
+    // ----------
+
+    if (eventName === "push" && ref.startsWith("refs/tags")) {
+      // Get tag name
+      const tagName = ref.replace("refs/tags/", "")
+
+      // Print tag name
+      core.info(`Tag name: ${tagName}`)
+
+      // Check tag name
+      if (!regexTagName.test(tagName))
+        core.setFailed("Tag name does not match regex")
+    }
+
+    // -----
+    // --------------- CHECK COMMITS
+    // ----------
+
+    // Get commits
+    let commits = []
+    if (eventName === "pull_request") {
+      // Get all commits from pull request
+      const { data } = await octokit.rest.pulls.listCommits({
+        owner: owner,
+        repo: repo,
+        pull_number: pullRequest.number
+      })
+
+      // Set commits
+      commits = data
+    } else if (eventName === "push") {
+      // Get pushed commits
+      let commitPromises = []
+
+      payload.commits.forEach(commit => {
+        commitPromises.push(octokit.rest.repos.getCommit({
+          owner: owner,
+          repo: repo,
+          ref: commit.id
+        }))
+      })
+
+      // Append commits
+      for await (const { data: commit } of commitPromises) {
+        commits.push(commit)
+      }
+    }
     
     // Check all commits
     commits.forEach(commit => {

@@ -48,6 +48,7 @@ The following input keys can be used in your GitHub Actions workflow (shown abov
 | re-commit-message-split            | Regex used to split commit message subject and body (DotAll) | `([^\n]*)(?:\n\n(.*))?` |
 | re-commit-message-subject          | Regex used to check commit message subject                   | `^[A-Z].*((?!\\.).)$`   |
 | re-pull-request-title              | Regex used to check pull request title                       | `^[A-Z].*((?!\\.).)$`   |
+| re-tag-name                        | Regex used to check tag name                                 | `.*`                    |
 
 ## Resources
 

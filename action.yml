@@ -76,6 +76,10 @@ inputs:
     description: "Regular expression to check pull request title"
     required: false
     default: "^[A-Z].*((?!\\.).)$"
+  re-tag-name:
+    description: "Regular expression to check tag name"
+    required: false
+    default: ".*"
 runs:
   using: "node12"
   main: "index.js"
