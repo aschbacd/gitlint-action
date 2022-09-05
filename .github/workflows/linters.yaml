@@ -1,0 +1,17 @@
+name: Linters
+
+on:
+  pull_request: {}
+  push: {}
+
+jobs:
+  gitlint:
+    runs-on: ubuntu-latest
+    name: GitLint
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Lint commits, branches, and pull requests
+        uses: ./
+        with:
+          re-branch-name: ^((feature|bug|hotfix|release)\/[a-z\-0-9]+|main)$
