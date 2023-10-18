@@ -52,7 +52,7 @@ async function run() {
 
     if (eventName === "pull_request") {
       // Print pull request title
-      core.info(`Pull request title: ${pullRequest.title}`)      
+      core.info(`Pull request title: ${pullRequest.title}`)
 
       // Check pull request title
       if (!regexPullRequestTitle.test(pullRequest.title))
@@ -117,6 +117,7 @@ async function run() {
       let commitPromises = []
 
       payload.commits.forEach(commit => {
+
         commitPromises.push(octokit.rest.repos.getCommit({
           owner: owner,
           repo: repo,
@@ -129,9 +130,13 @@ async function run() {
         commits.push(commit)
       }
     }
-    
+
     // Check all commits
     commits.forEach(commit => {
+      if (commit.parents && commit.parents.length > 1) {
+        core.info(`Merge commit detected: ${commit.sha}`);
+        return;
+      }
       // Split commit message
       let matches = regexCommitMessageSplit.exec(commit.commit.message)
       let commitMessageSubject = matches[1]
@@ -168,7 +173,7 @@ async function run() {
 
       if (!regexCommitCommitterName.test(commit.commit.committer.name))
         core.setFailed(`Commit committer name does not match regex (${commit.sha.substr(0, 7)})`)
-      
+
       // Check for valid signature
       if (prohibitUnsignedCommits && !commit.commit.verification.verified)
         core.setFailed(`Commit has no valid signature (${commit.sha.substr(0, 7)})`)
@@ -191,7 +196,7 @@ async function run() {
               core.setFailed(`Blank lines are not allowed in commit message body; line ${(index+1).toString()} (${commit.sha.substr(0, 7)})`)
           } else if (commitMessageBodyMinLength != -1 && line.length < commitMessageBodyMinLength) {
             core.setFailed(`Commit message body line ${(index+1).toString()} is too short (${commit.sha.substr(0, 7)})`)
-          }            
+          }
 
           if (commitMessageBodyMaxLength != -1 && line.length > commitMessageBodyMaxLength)
             core.setFailed(`Commit message body line ${(index+1).toString()} is too long (${commit.sha.substr(0, 7)})`)
