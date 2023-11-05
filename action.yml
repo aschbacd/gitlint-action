@@ -61,7 +61,7 @@ inputs:
     description: "Regular expression to check commit author name"
     required: false
     default: |
-      ^[A-Z][a-z]+[A-Za-z]*(-[A-Z][a-z]+[A-Za-z]*)*( ((St\.|[Vv]an|[Dd]e[lr]?|[Ll]a)|[A-Z](\.|[a-z]+[A-Za-z]*)(-[A-Z](\.|[a-z]+[A-Za-z]*))*))*( [A-Z][a-z]+[A-Za-z]*(-[A-Z][a-z]+[A-Za-z]*)*)$
+      ^(GitHub|[A-Z][a-z]+[A-Za-z]*(-[A-Z][a-z]+[A-Za-z]*)*( ((St\.|[Vv]an|[Dd]e[lr]?|[Ll]a)|[A-Z](\.|[a-z]+[A-Za-z]*)(-[A-Z](\.|[a-z]+[A-Za-z]*))*))*( [A-Z][a-z]+[A-Za-z]*(-[A-Z][a-z]+[A-Za-z]*)*))$
   re-commit-message-body:
     description: "Regular expression to check commit message body"
     required: false
