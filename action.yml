@@ -74,7 +74,7 @@ inputs:
     description: "Regular expression to check commit message subject"
     required: false
     default: |
-      ^(([A-Z]{2,10}-[0-9]+)(, [A-Z]{2,10}-[0-9]+)*: )?\b(?!Made)(?![A-Za-z]*(ing|ung|ang|ed|id|[^s]s)\b)[A-Z][a-z]*\b [/\- ._,()A-Za-z0-9]*[)A-Za-z0-9]$
+      ^(((?!Merge)[A-Z]{2,10}-[0-9]+)(, [A-Z]{2,10}-[0-9]+)*: )?\b(?!Made)(?![A-Za-z]*(ing|ung|ang|ed|id|[^s]s)\b)[A-Z][a-z]*\b [\- ._,()A-Za-z0-9]*[)A-Za-z0-9]|Merge[^\n]*$
   re-pull-request-title:
     description: "Regular expression to check pull request title"
     required: false
