@@ -1,4 +1,4 @@
-name: "GitLint Action"
+name: "gitlint-action"
 description: "Check if naming conventions for commits, branches, and pull requests are respected"
 branding:
   icon: "check"
