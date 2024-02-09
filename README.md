@@ -11,7 +11,7 @@ Create the file `.github/workflows/linters.yaml` in your repository and add the 
 
 ```yaml
 name: Linters
-
+```
 on:
   pull_request: {}
   push: {}
