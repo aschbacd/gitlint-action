@@ -1,0 +1,60 @@
+name: pr-check
+
+on:
+  pull_request:
+    types: ["opened", "edited", "reopened", "synchronize"]
+
+permissions: write-all
+
+jobs:
+  git-lint:
+    runs-on: ubuntu-latest
+    outputs:
+      files: ${{ steps.diff_files.outputs.files }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: git commit messages lint
+        id: commit_messages
+        run: |
+            messages=$(git log --pretty=format:"%s" ${{ github.event.pull_request.base.ref }})
+            echo "======================================="
+            echo "$messages"
+            echo "======================================="
+            echo "messages=$(echo $messages | tr '\n' ' ')" >> $GITHUB_OUTPUT
+
+      # - name: Validate the pull request
+      #   uses: aschbacd/gitlint-action@v1.1.0
+      #   with:
+      #     re-commit-message-subject: ^.*(feat|fix|docs|style|refactor|perf|revert|chore|ci):\ .*$
+      #     re-pull-request-title: .*
+      #     commit-message-body-max-length: -1
+      #     commit-message-subject-max-length: -1
+
+      - name: List diff files
+        id: diff_files
+        run: |
+          git fetch origin ${{ github.event.pull_request.base.ref }}
+          diff_files=$(git diff --name-only --patch-with-raw ${{ github.event.pull_request.head.sha }} ${{ github.event.pull_request.base.sha }})
+          echo "======================================="
+          echo "$diff_files"
+          echo "======================================="
+          echo "files=$(echo $diff_files | tr '\n' ' ')" >> $GITHUB_OUTPUT
+
+      - name: Show diff files
+        run: |
+          echo ${{steps.diff_files.outputs.files}}
+          echo ${{steps.commit_messages.outputs.messages}}
+
+  # frontend-check:
+  #   needs: git-lint
+  #   if: ${{ contains(needs.git-lint.outputs.files, 'frontend/') }}
+  #   uses: ./.github/workflows/frontend-check.yml
+
+  # backend-check:
+  #   needs: git-lint
+  #   if: ${{ contains(needs.git-lint.outputs.files, 'backend/') }}
+  #   uses: ./.github/workflows/backend-check.yml
