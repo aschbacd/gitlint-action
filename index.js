@@ -117,7 +117,6 @@ async function run() {
       let commitPromises = []
 
       payload.commits.forEach(commit => {
-
         commitPromises.push(octokit.rest.repos.getCommit({
           owner: owner,
           repo: repo,
@@ -133,10 +132,12 @@ async function run() {
 
     // Check all commits
     commits.forEach(commit => {
+      // Skip merge commits
       if (commit.parents && commit.parents.length > 1) {
         core.info(`Merge commit detected: ${commit.sha}`);
         return;
       }
+
       // Split commit message
       let matches = regexCommitMessageSplit.exec(commit.commit.message)
       let commitMessageSubject = matches[1]

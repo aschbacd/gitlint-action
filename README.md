@@ -22,7 +22,7 @@ jobs:
     name: GitLint
     steps:
       - name: Lint commits, branches, and pull requests
-        uses: aschbacd/gitlint-action@v1.1.1
+        uses: aschbacd/gitlint-action@v1.2.0
 ```
 
 ### Example configuration for Jira
@@ -44,7 +44,7 @@ jobs:
     name: GitLint
     steps:
       - name: Lint commits, branches, and pull requests
-        uses: aschbacd/gitlint-action@v1.1.1
+        uses: aschbacd/gitlint-action@v1.2.0
         with:
           re-commit-message-subject: ^(\[[A-Z]+\-[0-9]+\] )?[A-Z].*((?!\.).)$
           re-pull-request-title: ^(\[[A-Z]+\-[0-9]+\] )?[A-Z].*((?!\.).)$
